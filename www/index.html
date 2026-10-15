@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="az"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TH: Mafia – Moderator</title>
+<style>
+:root{--bg:#f3efe9;--cd:#fff;--tx:#1c1a18;--mu:#6e675f;--ac:#b3261e;--bd:#ddd5ca;--m:#b3261e;--t:#1f7a4a;--n:#a8741a;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0d0c;--cd:#1d1a18;--tx:#f0ebe4;--mu:#a1998f;--ac:#e5534b;--bd:#35302c;--m:#e5534b;--t:#4cc58a;--n:#e0a844;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0d0c;--cd:#1d1a18;--tx:#f0ebe4;--mu:#a1998f;--ac:#e5534b;--bd:#35302c;--m:#e5534b;--t:#4cc58a;--n:#e0a844;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:520px;margin:0 auto;padding:16px 14px 48px}
+h1{font-size:25px;margin:0}h2{font-size:15px;margin:16px 0 6px;letter-spacing:.04em;text-transform:uppercase}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.s{color:var(--mu);margin:2px 0 14px;font-size:14px}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:6px 14px;margin-bottom:10px}
+.r{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0}.r+.r{border-top:1px solid var(--bd)}
+.c{display:flex;align-items:center;gap:9px}.c b{min-width:22px;text-align:center;font-size:18px}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--cd);color:var(--tx);border-radius:10px;padding:7px 12px}
+.o{width:36px;height:36px;padding:0;font-size:19px}.sm{padding:5px 9px;font-size:13px}
+.big{width:100%;background:var(--ac);border-color:var(--ac);color:#fff;padding:14px;font-size:18px;font-weight:600;margin-top:6px}
+input{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx)}
+.w{color:var(--ac);font-size:14px;min-height:18px;margin:6px 0}
+.m{color:var(--m)}.t{color:var(--t)}.n{color:var(--n)}
+.rv{text-align:center;padding:36px 10px}.rl{font-size:32px;font-weight:700;margin:12px 0}.ds{color:var(--mu);font-size:15px}
+.hd{display:none}.dead{opacity:.45}.dead .nm{text-decoration:line-through}
+.bn{border-radius:14px;padding:14px;margin-bottom:10px;text-align:center;font-weight:700;font-size:18px;background:var(--ac);color:#fff}
+.ph{width:100%;padding:12px;font-size:17px;font-weight:600}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+summary{cursor:pointer;padding:8px 0;font-weight:600}
+</style></head><body><main id="app"></main>
+<script>
+const RL=[
+["mafia","m","🔪",["Mafiya","Mafia"],["Hər gecə bir nəfəri öldürür","Kills one player each night"]],
+["don","m","🎩",["Don","Godfather"],["Yoxlananda günahsız görünür","Appears innocent when investigated"]],
+["sniper","m","🎯",["Snayper","Sniper"],["Bir güllə, Həkim qoruyuşunu keçir","One bullet that pierces Doctor's protection"]],
+["black","m","🤐",["Şantajçı","Blackmailer"],["Hədəfi bir gün susdurur","Silences a target for a day"]],
+["det","t","🕵️",["Komissar","Detective"],["Hər gecə bir nəfəri yoxlayır","Investigates one player each night"]],
+["doc","t","💉",["Həkim","Doctor"],["Hər gecə bir nəfəri ölümdən qoruyur","Protects one player each night"]],
+["nurse","t","🩺",["Tibb bacısı","Nurse"],["Həkim ölərsə onun yerini tutur","Takes over if the Doctor dies"]],
+["hunter","t","🏹",["Ovçu","Hunter"],["Ölərkən bir nəfəri özü ilə aparır","Fires a revenge shot when eliminated"]],
+["guard","t","🛡️",["Mühafizəçi","Bodyguard"],["Hədəfi qoruyub özü ölür","Dies protecting their target"]],
+["vil","t","🙂",["Mülki","Villager"],["Mafiyanı tapıb səslə asır","Finds and votes out the Mafia"]],
+["sk","n","🪓",["Manyak","Serial Killer"],["Tək, hamıya qarşı oynayır","Plays alone against everyone"]],
+["jest","n","🤡",["Məzə","Jester"],["Səslə asılsa tək qalib olur","Wins solo if voted out"]]];
+const T={az:{h:"TH: Mafia",sub:"Bir telefondan oynanan moderator tətbiqi",pc:"Oyunçu sayı",nm:"Oyunçu adları",rl:"Rollar",auto:"avtomatik",go:"Rolları payla",over:"Rollar oyunçudan çoxdur",nomaf:"Mafiya və ya Manyak lazımdır",pass:"Telefonu bu oyunçuya ver",show:"Rolumu göstər",nx:"Gizlət, növbətiyə keç",fin:"Gizlət və başla",night:"🌙 Gecə",day:"☀️ Gündüz",to:"Növbəti mərhələ",ord:"Gecə ardıcıllığı",pl:"Oyunçular",sr:"Rolları göstər",hr:"Rolları gizlət",kill:"Öldü",hang:"Asıldı",rev:"Dirilt",ref:"Rolların təsviri",nw:"Yeni oyun",al:"Sağ",wm:"Mafiya qalib oldu!",wt:"Şəhər qalib oldu!",wk:"Manyak qalib oldu!",wj:"Məzə qalib oldu!",hn:"Ovçu öldü, atəş açır!",rd:"Gün"},
+en:{h:"TH: Mafia",sub:"Single-phone moderator app",pc:"Players",nm:"Player names",rl:"Roles",auto:"auto",go:"Deal roles",over:"More roles than players",nomaf:"Need a Mafia or Serial Killer",pass:"Hand the phone to this player",show:"Show my role",nx:"Hide, next player",fin:"Hide and start",night:"🌙 Night",day:"☀️ Day",to:"Next phase",ord:"Night order",pl:"Players",sr:"Show roles",hr:"Hide roles",kill:"Killed",hang:"Hanged",rev:"Revive",ref:"Role guide",nw:"New game",al:"Alive",wm:"Mafia wins!",wt:"Town wins!",wk:"Serial Killer wins!",wj:"Jester wins!",hn:"Hunter died, fires a shot!",rd:"Day"}};
+let L="az",n=8,names=[],cnt={mafia:2,doc:1,det:1},deck=[],i=0,shown=false,alive=[],jw=false,night=true,rd=1,sr=false,note="";
+const $=s=>document.getElementById(s),R=id=>RL.find(r=>r[0]===id),t=k=>T[L][k],li=x=>L==="az"?0:1;
+const rn=id=>R(id)[3][li()],rds=id=>R(id)[4][li()];
+const sum=()=>Object.values(cnt).reduce((a,b)=>a+b,0),civ=()=>n-sum();
+function nm(k){return (names[k]||"").trim()||(L==="az"?"Oyunçu ":"Player ")+(k+1)}
+function keep(){document.querySelectorAll("[data-n]").forEach(e=>names[+e.dataset.n]=e.value)}
+function setup(){
+ const w=civ()<0?t("over"):(!sum()||!(["mafia","don","sniper","black","sk"].some(k=>cnt[k]>0))?t("nomaf"):"");
+ let h=`<div class="top"><h1>🎭 ${t("h")}</h1><button class="sm" onclick="keep();L=L==='az'?'en':'az';setup()">${L==="az"?"EN":"AZ"}</button></div><p class="s">${t("sub")}</p>
+ <div class="cd"><div class="r"><span>${t("pc")}</span><div class="c"><button class="o" onclick="keep();n=Math.max(4,n-1);setup()">−</button><b>${n}</b><button class="o" onclick="keep();n=Math.min(20,n+1);setup()">+</button></div></div></div>
+ <h2>${t("nm")}</h2><div class="cd">`+Array.from({length:n},(_,k)=>`<div class="r"><input data-n="${k}" maxlength="18" placeholder="${nm(k)}" value="${(names[k]||"").replace(/"/g,"&quot;")}"></div>`).join("")+`</div>
+ <h2>${t("rl")}</h2><div class="cd">`+RL.filter(r=>r[0]!=="vil").map(r=>`<div class="r"><span class="${r[1]}">${r[2]} ${rn(r[0])}</span><div class="c"><button class="o" onclick="keep();cnt['${r[0]}']=Math.max(0,(cnt['${r[0]}']||0)-1);setup()">−</button><b>${cnt[r[0]]||0}</b><button class="o" onclick="keep();cnt['${r[0]}']=(cnt['${r[0]}']||0)+1;setup()">+</button></div></div>`).join("")+`<div class="r"><span class="t">🙂 ${rn("vil")} <small>(${t("auto")})</small></span><b>${Math.max(0,civ())}</b></div></div>
+ <div class="w">${w}</div><button class="big" ${w?"disabled style='opacity:.5'":""} onclick="start()">${t("go")}</button>`;
+ $("app").innerHTML=h}
+function start(){keep();deck=[];Object.keys(cnt).forEach(k=>{for(let j=0;j<cnt[k];j++)deck.push(k)});for(let j=0;j<civ();j++)deck.push("vil");
+ for(let j=deck.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[deck[j],deck[k]]=[deck[k],deck[j]]}
+ alive=deck.map(()=>true);i=0;shown=false;jw=false;night=true;rd=1;deal()}
+function deal(){
+ const r=R(deck[i]);
+ $("app").innerHTML=`<div class="cd rv"><small>${i+1} / ${n}</small><h1>${nm(i)}</h1>`+(shown?`<div class="rl ${r[1]}">${r[2]} ${rn(r[0])}</div><div class="ds">${rds(r[0])}</div>`:`<p class="s">${t("pass")}</p>`)+`</div><button class="big" onclick="step()">${shown?(i===n-1?t("fin"):t("nx")):t("show")}</button>`}
+function step(){if(!shown){shown=true;deal()}else{shown=false;i++;if(i>=n)game();else deal()}}
+function win(){
+ const a=deck.map((d,k)=>alive[k]?d:null).filter(Boolean),M=a.filter(d=>R(d)[1]==="m").length,K=a.filter(d=>d==="sk").length;
+ if(jw)return["wj","n"];
+ if(K>0){if(M===0&&a.length-K<=1)return["wk","n"];return null}
+ if(M===0)return["wt","t"];
+ if(M>=a.length-M)return["wm","m"];return null}
+function out(k,h){alive[k]=false;note="";if(h&&deck[k]==="jest")jw=true;if(deck[k]==="hunter")note=t("hn");game()}
+function game(){
+ const w=win(),a=alive.filter(Boolean).length;
+ const ids=[...new Set(deck.filter((d,k)=>alive[k]))],ord=["black","mafia","don","sniper","doc","nurse","guard","det","sk"].filter(x=>ids.includes(x));
+ let h=`<div class="top"><h1>🎭 ${t("h")}</h1><button class="sm" onclick="if(confirm('?'))setup()">${t("nw")}</button></div>`;
+ if(w)h+=`<div class="bn">🏆 ${t(w[0])}</div>`;
+ if(note&&!w)h+=`<div class="bn" style="background:var(--n)">${note}</div>`;
+ h+=`<button class="ph cd" onclick="night=!night;if(!night)rd++;note='';game()">${night?t("night"):t("day")} · ${t("rd")} ${rd}  ›  ${t("to")}</button>`;
+ if(night&&ord.length)h+=`<h2>${t("ord")}</h2><div class="cd">`+ord.map((x,q)=>`<div class="r"><span class="${R(x)[1]}">${q+1}. ${R(x)[2]} ${rn(x)}</span><small>${rds(x)}</small></div>`).join("")+`</div>`;
+ h+=`<div class="top"><h2>${t("pl")} · ${t("al")} ${a}/${n}</h2><button class="sm" onclick="sr=!sr;game()">${sr?t("hr"):t("sr")}</button></div><div class="cd">`;
+ for(let k=0;k<n;k++){const r=R(deck[k]);
+  h+=`<div class="r ${alive[k]?"":"dead"}"><div><span class="nm">${nm(k)}</span>${sr?`<br><small class="${r[1]}"><span class="dot" style="background:var(--${r[1]})"></span>${r[2]} ${rn(r[0])}</small>`:""}</div><div class="c">`+(alive[k]?`<button class="sm" onclick="out(${k},0)">☠ ${t("kill")}</button><button class="sm" onclick="out(${k},1)">⚖ ${t("hang")}</button>`:`<button class="sm" onclick="alive[${k}]=true;if(deck[${k}]==='jest')jw=false;note='';game()">↩ ${t("rev")}</button>`)+`</div></div>`}
+ h+=`</div><details class="cd"><summary>${t("ref")}</summary>`+RL.map(r=>`<div class="r"><span class="${r[1]}">${r[2]} ${rn(r[0])}</span><small style="text-align:right">${rds(r[0])}</small></div>`).join("")+`</details>`;
+ $("app").innerHTML=h}
+setup();
+</script></body></html>
